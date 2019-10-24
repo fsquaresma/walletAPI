@@ -1,5 +1,6 @@
 package com.wallet.controller;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,7 @@ import com.wallet.service.UserService;
 @SpringBootTest
 public class UserControllerTest {
 	
+	private static final Long ID = 1L;
 	private static final String NAME = "test user";
 	private static final String EMAIL = "email@test.com";
 	private static final String PASSWORD = "123test";
@@ -44,15 +46,30 @@ public class UserControllerTest {
 		BDDMockito.given(service.save(Mockito.any(User.class))).willReturn(getMockUser());
 		
 		mvc.perform(MockMvcRequestBuilders.post(URL)
-				.content(getJsonPayload())
-				.contentType(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON))
-		.andExpect(status().isCreated());
+			.content(getJsonPayload(ID, NAME, EMAIL, PASSWORD))
+			.contentType(MediaType.APPLICATION_JSON)
+			.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isCreated())
+			.andExpect(jsonPath("$.data.id").value(ID))
+			.andExpect(jsonPath("$.data.name").value(NAME))
+			.andExpect(jsonPath("$.data.email").value(EMAIL))
+			.andExpect(jsonPath("$.data.password").value(PASSWORD));
+	}
+	
+	@Test
+	public void testSaveInvalidUser() throws Exception {
+		mvc.perform(MockMvcRequestBuilders.post(URL)
+			.content(getJsonPayload(ID, "2sew", NAME, PASSWORD))
+			.contentType(MediaType.APPLICATION_JSON)
+			.accept(MediaType.APPLICATION_JSON))
+			.andExpect(status().isBadRequest())
+			.andExpect(jsonPath("$.errors[0]").value("Email inválido"));
 	}
 	
 	public User getMockUser() {
 		User user = new User();
 		
+		user.setId(ID);
 		user.setName(NAME);
 		user.setEmail(EMAIL);
 		user.setPassword(PASSWORD);
@@ -60,12 +77,13 @@ public class UserControllerTest {
 		return user;
 	}
 	
-	public String getJsonPayload() throws JsonProcessingException {
+	public String getJsonPayload(Long id, String name, String email, String password) throws JsonProcessingException {
 		UserDTO dto = new UserDTO();
 		
-		dto.setName(NAME);
-		dto.setEmail(EMAIL);
-		dto.setPassword(PASSWORD);
+		dto.setId(id);
+		dto.setName(name);
+		dto.setEmail(email);
+		dto.setPassword(password);
 		
 		ObjectMapper mapper = new ObjectMapper();
 		
