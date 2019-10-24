@@ -6,8 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Optional;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class UserRepositoryTest {
 	@Autowired
 	UserRepository repository;
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
 		User user = new User();
 		
@@ -38,7 +38,7 @@ public class UserRepositoryTest {
 		repository.save(user);
 	}
 	
-	@After
+	@AfterEach
 	public void tearDown() {
 		repository.deleteAll();
 	}
