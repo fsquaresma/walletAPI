@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import com.wallet.entity.Wallet;
 import com.wallet.entity.WalletItem;
+import com.wallet.util.enums.TypeEnum;
 
 @RunWith(SpringRunner.class)
 @ActiveProfiles("test")
@@ -24,7 +25,7 @@ import com.wallet.entity.WalletItem;
 public class WalletItemsRepositoryTest {
 	
 	private static final Date DATE = new Date();
-	private static final String TYPE = "EN";
+	private static final TypeEnum TYPE = TypeEnum.EN;
 	private static final String DESCRIPTION = "Conta de luz";
 	private static final BigDecimal VALUE = BigDecimal.valueOf(65);
 	

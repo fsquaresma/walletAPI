@@ -5,6 +5,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,6 +16,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
+import com.wallet.util.enums.TypeEnum;
+
 @Entity
 @Table(name = "wallet_items")
 public class WalletItem implements Serializable {
@@ -22,7 +26,7 @@ public class WalletItem implements Serializable {
 	
 	public WalletItem() { }
 	
-	public WalletItem(Wallet wallet, Date date, String type, String description, BigDecimal value) {
+	public WalletItem(Wallet wallet, Date date, TypeEnum type, String description, BigDecimal value) {
 		this.wallet = wallet;
 		this.date = date;
 		this.type = type;
@@ -45,7 +49,8 @@ public class WalletItem implements Serializable {
 	private String description;
 	
 	@NotNull
-	private String type;
+	@Enumerated(EnumType.STRING)
+	private TypeEnum type;
 	
 	@NotNull
 	private BigDecimal value;
@@ -82,11 +87,11 @@ public class WalletItem implements Serializable {
 		this.description = description;
 	}
 
-	public String getType() {
+	public TypeEnum getType() {
 		return type;
 	}
 
-	public void setType(String type) {
+	public void setType(TypeEnum type) {
 		this.type = type;
 	}
 
