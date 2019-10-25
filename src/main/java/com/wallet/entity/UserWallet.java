@@ -12,7 +12,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "user_wallet")
+@Table(name = "users_wallet")
 public class UserWallet implements Serializable {
 
 	private static final long serialVersionUID = -8104860055294069590L;
@@ -21,11 +21,11 @@ public class UserWallet implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@JoinColumn
+	@JoinColumn(name = "users")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private User user;
 	
-	@JoinColumn
+	@JoinColumn(name = "wallet")
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Wallet wallet;
 
