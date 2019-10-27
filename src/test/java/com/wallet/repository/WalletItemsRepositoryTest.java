@@ -37,12 +37,19 @@ public class WalletItemsRepositoryTest {
 
 	@BeforeEach
 	public void setUp() {
+		Wallet wallet = new Wallet();
+		wallet.setName("Carteira Teste");
+		wallet.setValue(BigDecimal.valueOf(250));
+		walletRepository.save(wallet);
 		
+		WalletItem walletItem = new WalletItem(wallet, DATE, TYPE, DESCRIPTION, VALUE);
+		walletItemRepository.save(walletItem);
 	}
 	
 	@AfterEach
 	public void tearDown() {
-		
+		walletItemRepository.deleteAll();
+		walletRepository.deleteAll();
 	}
 	
 	@Test
